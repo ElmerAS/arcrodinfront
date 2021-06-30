@@ -60,7 +60,7 @@
       </div>
       <div v-else>
         <br />
-        <p>Por favor elige un usuario...</p>
+        <p>Por favor elige un cliente...</p>
       </div>
     </div>
   </div>

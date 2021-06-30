@@ -40,5 +40,20 @@ export default new Router({
       name: "add-client",
       component: () => import("./components/client/AddClient"),
     },
+    {
+      path: "/proformas",
+      name: "proformas",
+      component: () => import("./components/proforma/ListProformas"),
+    },
+    {
+      path: "/editProforma/:id",
+      name: "proforma-edit",
+      component: () => import("./components/proforma/EditProforma"),
+    },
+    {
+      path: "/addProforma",
+      name: "add-proforma",
+      component: () => import("./components/proforma/AddProforma"),
+    },
   ],
 });
