@@ -1,32 +1,36 @@
 <template>
-  <div v-if="currentUser" class="edit-form">
+  <div v-if="currentClient" class="edit-form">
     <h4>Usuario</h4>
     <form>
       <div class="form-group">
-        <label for="name">Nombre</label>
+        <label for="cod">Codigo</label>
+        <input type="text" class="form-control" id="cod"
+          v-model="currentClient.codigoCliente"
+        />
+      </div>
+      <div class="form-group">
+        <label for="lastname">Razon Social</label>
         <input type="text" class="form-control" id="name"
-          v-model="currentUser.name"
+          v-model="currentClient.razonSocial"
+        />
+      </div>
+      <div class="form-group">
+        <label for="address">Direccion</label>
+        <input type="text" class="form-control" id="address"
+          v-model="currentClient.direccion"
+        />
+      </div>
+      <div class="form-group">
+        <label for="ruc">RUC</label>
+        <input type="text" class="form-control" id="ruc"
+          v-model="currentClient.ruc"
         />
       </div>
       <div class="form-group">
         <label for="obs">Observaciones</label>
-        <input type="text" class="form-control" id="obs"
-          v-model="currentUser.obs"
+        <textarea class="form-control" id="obs" rows="4"
+          v-model="currentClient.obsCliente"
         />
-      </div>
-      <div class="form-group">
-        <label for="role">Rol</label>
-        <select class="form-control" name="role" id="role"
-          v-model="currentUser.role">
-          <option value=1>Desarrollador</option>
-          <option value=2>Gestor</option>
-          <option value=3>Administrador</option>
-        </select>
-      </div>
-
-      <div class="form-group">
-        <label><strong>Estado:</strong></label>
-        {{ currentUser.active ? "Habilitado" : "Pendiente" }}
       </div>
     </form>
     <button class="badge badge-info mr-2"
@@ -34,26 +38,15 @@
     >
       Regresar
     </button>
-    <button class="badge badge-primary mr-2"
-      v-if="currentUser.active"
-      @click="updateActive(false)"
-    >
-      Desactivar
-    </button>
-    <button v-else class="badge badge-primary mr-2"
-      @click="updateActive(true)"
-    >
-      Activar
-    </button>
 
     <button class="badge badge-danger mr-2"
-      @click="deleteUser"
+      @click="deleteClient"
     >
       Eliminar
     </button>
 
     <button type="submit" class="badge badge-success"
-      @click="updateUser"
+      @click="updateClient"
     >
       Actualizar
     </button>
@@ -67,66 +60,48 @@
 </template>
 
 <script>
-import UserService from "../../services/UserDataService";
+import ClientService from "../../services/ClientDataService";
 
 export default {
-  name: "user-edit",
+  name: "client-edit",
   data() {
     return {
-      currentUser: null,
+      currentClient: null,
       message: ''
     };
   },
   methods: {
     returnList(){
-        setTimeout(() => this.$router.push('/users'), 500);
+        setTimeout(() => this.$router.push('/clients'), 500);
     },
-    getUser(id) {
-      UserService.get(id)
+    getClient(id) {
+      ClientService.get(id)
         .then(response => {
-          this.currentUser = response.data;
-          console.log(response.data);
+          this.currentClient = response.data.cliente;
+          console.log(response.data.cliente);
         })
         .catch(e => {
           console.log(e);
         });
     },
 
-    updateActive(status) {
-      var data = {
-        id: this.currentUser.id,
-        name: this.currentUser.name,
-        role: this.currentUser.role,
-        obs: this.currentUser.obs,
-        active: status
-      };
-
-      UserService.update(this.currentUser.id, data)
+    updateClient() {
+      ClientService.update(this.currentClient._id, this.currentClient)
         .then(response => {
-          this.currentUser.active = status;
           console.log(response.data);
+          this.message = 'Cliente Actualizado Correctamente!';
+          setTimeout(() => this.$router.push('/clients'), 2000);
         })
         .catch(e => {
           console.log(e);
         });
     },
 
-    updateUser() {
-      UserService.update(this.currentUser.id, this.currentUser)
+    deleteClient() {
+      ClientService.delete(this.currentClient._id)
         .then(response => {
           console.log(response.data);
-          this.message = 'Usuario Actualizado Correctamente!';
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
-    deleteUser() {
-      UserService.delete(this.currentUser.id)
-        .then(response => {
-          console.log(response.data);
-          this.$router.push({ name: "users" });
+          this.$router.push({ name: "clients" });
         })
         .catch(e => {
           console.log(e);
@@ -135,7 +110,7 @@ export default {
   },
   mounted() {
     this.message = '';
-    this.getUser(this.$route.params.id);
+    this.getClient(this.$route.params.id);
   }
 };
 </script>

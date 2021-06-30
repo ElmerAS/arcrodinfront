@@ -2,67 +2,65 @@
   <div class="submit-form">
     <div v-if="!submitted">
       <div class="form-group">
-        <label for="title">Nombre</label>
+        <label for="code">Codigo Cliente</label>
+        <input
+          type="text"
+          class="form-control"
+          id="code"
+          required
+          v-model="client.codigoCliente"
+          name="code"
+        />
+      </div>
+      <div class="form-group">
+        <label for="name">Razon Social</label>
         <input
           type="text"
           class="form-control"
           id="name"
           required
-          v-model="client.name"
+          v-model="client.razonSocial"
           name="name"
         />
       </div>
       <div class="form-group">
-        <label for="title">Contacto</label>
-        <input
-          type="text"
-          class="form-control"
-          id="owner"
-          required
-          v-model="client.owner"
-          name="owner"
-        />
-      </div>
-      <div class="form-group">
-        <label for="title">Direccion</label>
+        <label for="address">Direccion</label>
         <input
           type="text"
           class="form-control"
           id="address"
           required
-          v-model="client.address"
+          v-model="client.direccion"
           name="address"
         />
       </div>
       <div class="form-group">
-        <label for="mail">Correo</label>
+        <label for="ruc">RUC</label>
         <input
           type="text"
           class="form-control"
-          id="mail"
+          id="ruc"
           required
-          v-model="client.mail"
-          name="mail"
+          v-model="client.ruc"
+          name="ruc"
         />
       </div>
       <div class="form-group">
-        <label for="title">Telefono</label>
-        <input
-          type="text"
+        <label for="obs">Observaciones</label>
+        <textarea
           class="form-control"
-          id="phone"
-          required
-          v-model="client.phone"
-          name="phone"
+          id="obs"
+          rows="4"
+          v-model="client.obsCliente"
+          name="obs"
         />
       </div>
       <button @click="returnList" class="btn btn-danger" style="margin:5px">Regresar</button>
-      <button @click="saveClient" class="btn btn-success" style="margin:5px">Crear</button>
+      <button @click="saveClient" class="btn btn-success" style="margin:5px">Crear Cliente</button>
     </div>
 
     <div v-else>
       <h4>Cliente creado correctamente!</h4>
-      <!--<button class="btn btn-success" @click="newClient">Añadir Nuevo</button>-->
     </div>
   </div>
 </template>
@@ -75,13 +73,13 @@ export default {
   data() {
     return {
       client: {
-        id: null, 
-        name: "", 
-        owner: "", 
-        address: "", 
-        phone: "", 
-        mail: "", 
-        active: true
+        id: null,
+        codigoCliente: "",
+        direccion:"",
+        obsCliente:"",
+        razonSocial: '',
+        ruc: '',
+        published: false
       },
       submitted: false
     };
@@ -92,13 +90,13 @@ export default {
     },
     saveClient() {
       var data = {
-        name: this.client.name,
-        owner: this.client.owner,
-        address: this.client.address,
-        mail:this.client.mail,
-        phone:this.client.phone
+        codigoCliente: this.client.codigoCliente,
+        direccion:this.client.direccion,
+        obsCliente:this.client.obsCliente,
+        razonSocial: this.client.razonSocial,
+        ruc: this.client.ruc,
       };
-
+      console.log(data)
       ClientService.create(data)
         .then(response => {
           this.client.id = response.data.id;

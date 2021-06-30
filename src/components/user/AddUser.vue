@@ -2,14 +2,25 @@
   <div class="submit-form">
     <div v-if="!submitted">
       <div class="form-group">
-        <label for="title">Nombre</label>
+        <label for="name">Nombre</label>
         <input
           type="text"
           class="form-control"
           id="name"
           required
-          v-model="user.name"
+          v-model="user.nombre"
           name="name"
+        />
+      </div>
+      <div class="form-group">
+        <label for="lastname">Apellidos</label>
+        <input
+          type="text"
+          class="form-control"
+          id="lastname"
+          required
+          v-model="user.apellidos"
+          name="lastname"
         />
       </div>
       <div class="form-group">
@@ -19,34 +30,52 @@
           class="form-control"
           id="mail"
           required
-          v-model="user.mail"
+          v-model="user.correo"
           name="mail"
         />
       </div>
       <div class="form-group">
-        <label for="description">Datos Adicionales</label>
+        <label for="phone">Telefono</label>
         <input
           class="form-control"
-          id="obs"
+          id="phone"
           required
-          v-model="user.obs"
-          name="obs"
+          v-model="user.telefono"
+          name="phone"
         />
       </div>
 
       <div class="form-group">
-        <label for="role">Rol</label>
+        <label for="role">Cargo</label>
         <select 
           class="form-control"
           name="role" 
           id="role"
           required
-          v-model="user.role"
+          v-model="user.cargo"
         >
-          <option value=1>Desarrollador</option>
-          <option value=2>Gestor</option>
-          <option value=3>Administrador</option>
+          <option value='jefe'>Jefe</option>
+          <option value='operador'>Operador</option>
         </select>
+      </div>
+      <div class="form-group">
+        <label for="user">Usuario</label>
+        <input
+          class="form-control"
+          id="user"
+          required
+          v-model="user.user"
+          name="user"
+        />
+      </div>
+      <div class="form-group">
+        <label for="pass">Contraseña</label>
+        <input
+          class="form-control"
+          id="pass"
+          v-model="user.pass"
+          name="pass"
+        />
       </div>
       <button @click="returnList" class="btn btn-danger" style="margin:5px">Regresar</button>
       <button @click="saveUser" class="btn btn-success" style="margin:5px">Crear Usuario</button>
@@ -54,7 +83,6 @@
 
     <div v-else>
       <h4>Usuario creado correctamente!</h4>
-      <!--<button class="btn btn-success" @click="newUser">Añadir Nuevo</button>-->
     </div>
   </div>
 </template>
@@ -68,10 +96,13 @@ export default {
     return {
       user: {
         id: null,
-        name: "",
-        obs: "",
-        mail:"",
-        role: 1,
+        nombre: "",
+        apellidos: "",
+        correo:"",
+        telefono:"",
+        cargo: 'operador',
+        user: '',
+        pass: '',
         published: false
       },
       submitted: false
@@ -83,12 +114,15 @@ export default {
     },
     saveUser() {
       var data = {
-        name: this.user.name,
-        obs: this.user.obs,
-        role: this.user.role,
-        mail:this.user.mail
+          nombre: this.user.nombre,
+          apellidos: this.user.apellidos,
+          correo:this.user.correo,
+          telefono:this.user.telefono,
+          cargo: this.user.cargo,
+          user: this.user.user,
+          pass: this.user.pass,
       };
-
+    console.log(data)
       UserService.create(data)
         .then(response => {
           this.user.id = response.data.id;

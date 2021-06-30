@@ -5,45 +5,46 @@
       <div class="form-group">
         <label for="name">Nombre</label>
         <input type="text" class="form-control" id="name"
-          v-model="currentUser.name"
+          v-model="currentUser.nombre"
         />
       </div>
       <div class="form-group">
-        <label for="obs">Observaciones</label>
-        <input type="text" class="form-control" id="obs"
-          v-model="currentUser.obs"
+        <label for="lastname">Apellidos</label>
+        <input type="text" class="form-control" id="lastname"
+          v-model="currentUser.apellidos"
         />
       </div>
       <div class="form-group">
-        <label for="role">Rol</label>
+        <label for="mail">Correo</label>
+        <input type="text" class="form-control" id="mail"
+          v-model="currentUser.correo"
+        />
+      </div>
+      <div class="form-group">
+        <label for="phone">Telefono</label>
+        <input type="text" class="form-control" id="phone"
+          v-model="currentUser.telefono"
+        />
+      </div>
+      <div class="form-group">
+        <label for="role">Cargo</label>
         <select class="form-control" name="role" id="role"
-          v-model="currentUser.role">
-          <option value=1>Desarrollador</option>
-          <option value=2>Gestor</option>
-          <option value=3>Administrador</option>
+          v-model="currentUser.cargo">
+          <option value='jefe'>Jefe</option>
+          <option value='operador'>Operador</option>
         </select>
       </div>
-
       <div class="form-group">
-        <label><strong>Estado:</strong></label>
-        {{ currentUser.active ? "Habilitado" : "Pendiente" }}
+        <label for="user">Usuario</label>
+        <input type="text" class="form-control" id="user"
+          v-model="currentUser.user"
+        />
       </div>
     </form>
     <button class="badge badge-info mr-2"
       @click="returnList()"
     >
       Regresar
-    </button>
-    <button class="badge badge-primary mr-2"
-      v-if="currentUser.active"
-      @click="updateActive(false)"
-    >
-      Desactivar
-    </button>
-    <button v-else class="badge badge-primary mr-2"
-      @click="updateActive(true)"
-    >
-      Activar
     </button>
 
     <button class="badge badge-danger mr-2"
@@ -84,27 +85,8 @@ export default {
     getUser(id) {
       UserService.get(id)
         .then(response => {
-          this.currentUser = response.data;
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    },
-
-    updateActive(status) {
-      var data = {
-        id: this.currentUser.id,
-        name: this.currentUser.name,
-        role: this.currentUser.role,
-        obs: this.currentUser.obs,
-        active: status
-      };
-
-      UserService.update(this.currentUser.id, data)
-        .then(response => {
-          this.currentUser.active = status;
-          console.log(response.data);
+          this.currentUser = response.data.usuario;
+          console.log(response.data.usuario);
         })
         .catch(e => {
           console.log(e);
@@ -112,10 +94,11 @@ export default {
     },
 
     updateUser() {
-      UserService.update(this.currentUser.id, this.currentUser)
+      UserService.update(this.currentUser._id, this.currentUser)
         .then(response => {
           console.log(response.data);
           this.message = 'Usuario Actualizado Correctamente!';
+          setTimeout(() => this.$router.push('/users'), 2000);
         })
         .catch(e => {
           console.log(e);
@@ -123,7 +106,7 @@ export default {
     },
 
     deleteUser() {
-      UserService.delete(this.currentUser.id)
+      UserService.delete(this.currentUser._id)
         .then(response => {
           console.log(response.data);
           this.$router.push({ name: "users" });

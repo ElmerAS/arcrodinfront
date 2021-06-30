@@ -3,9 +3,9 @@
     <div class="col-md-8">
       <div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Busqueda por nombre"
-          v-model="name"/>
+          v-model="name" readonly/>
         <div class="input-group-append">
-          <button class="btn btn-outline-secondary" type="button"
+          <button class="btn btn-outline-secondary" disabled type="button"
             @click="searchName"
           >
             Buscar
@@ -21,15 +21,15 @@
       <ul class="list-group">
         <li class="list-group-item"
           :class="{ active: index == currentIndex }"
-          v-for="(user, index) in clients"
+          v-for="(client, index) in clients"
           :key="index"
-          @click="setActiveClient(user, index)"
+          @click="setActiveClient(client, index)"
         >
-          {{ user.name }}
+          {{ client.razonSocial }}
         </li>
       </ul>
 
-      <button class="m-3 btn btn-sm btn-danger" @click="removeAllClients">
+      <button disabled class="m-3 btn btn-sm btn-danger" @click="removeAllClients">
         Eliminar Todo
       </button>
     </div>
@@ -37,42 +37,30 @@
       <div v-if="currentClient">
         <h4>Cliente</h4>
         <div>
-          <label><strong>Nombre:</strong></label> {{ currentClient.name }}
+          <label><strong>Codigo:</strong></label> {{ currentClient.codigoCliente }}
         </div>
         <div>
-          <label><strong>Representante:</strong></label> {{ currentClient.owner }}
+          <label><strong>Razon Social:</strong></label> {{ currentClient.razonSocial }}
         </div>
         <div>
-          <label><strong>Telefono:</strong></label> {{ currentClient.phone }}
+          <label><strong>Direccion:</strong></label> {{ currentClient.direccion }}
         </div>
         <div>
-          <label><strong>Correo:</strong></label> {{ currentClient.mail }}
+          <label><strong>RUC:</strong></label> {{ currentClient.ruc }}
         </div>
         <div>
-          <label><strong>Direccion:</strong></label> {{ currentClient.address }}
-        </div>
-        <div>
-          <label><strong>Estado:</strong></label> {{ currentClient.active ? "Habilitado" : "Pendiente" }}
+          <label><strong>Observacion:</strong></label> {{ currentClient.obsCliente }}
         </div>
 
         <a class="badge badge-warning"
-          :href="'/editClient/' + currentClient.id"
+          :href="'/client/' + currentClient._id"
         >
           Editar
         </a>
-        <h4 style="margin-top:10px">Proyectos:</h4>
-        <ul class="list-group">
-          <li class="list-group-item"
-            v-for="(projectOne, index) in projects"
-            :key="index"
-          >
-            {{ projectOne.project.title }}
-          </li>
-        </ul>
       </div>
       <div v-else>
         <br />
-        <p>Por favor elige un cliente...</p>
+        <p>Por favor elige un usuario...</p>
       </div>
     </div>
   </div>
@@ -80,9 +68,8 @@
 
 <script>
 import ClientService from "../../services/ClientDataService";
-import ProjectService from "../../services/ProjectDataService";
 export default {
-  name: "client-list",
+  name: "clients-list",
   data() {
     return {
       clients: [],
@@ -96,8 +83,8 @@ export default {
     retrieveClients() {
       ClientService.getAll()
         .then(response => {
-          this.clients = response.data;
-          console.log(response.data);
+          this.clients = response.data.cliente;
+          console.log(response.data.cliente)
         })
         .catch(e => {
           console.log(e);
@@ -110,10 +97,9 @@ export default {
       this.currentIndex = -1;
     },
 
-    setActiveClient(user, index) {
-      this.currentClient = user;
+    setActiveClient(client, index) {
+      this.currentClient = client;
       this.currentIndex = index;
-      this.getProjects();
     },
 
     removeAllClients() {
@@ -137,18 +123,6 @@ export default {
           console.log(e);
         });
     },
-    getProjects(){
-      console.log("inicio proyectos")
-      ProjectService.getProjectbyClient(this.currentClient.id)
-      .then(response => {
-          console.log("proyectos")
-          this.projects = response.data;
-          console.log(response.data);
-        })
-        .catch(e => {
-          console.log(e);
-        });
-    }
   },
   mounted() {
     this.retrieveClients();

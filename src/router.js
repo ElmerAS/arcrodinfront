@@ -26,36 +26,6 @@ export default new Router({
       component: () => import("./components/user/AddUser"),
     },
     {
-      path: "/activate/:id",
-      name: "user-activate",
-      component: () => import("./components/user/ActivateUser"),
-    },
-    {
-      path: "/projects",
-      name: "projects",
-      component: () => import("./components/project/ListProjects"),
-    },
-    {
-      path: "/project/:id",
-      name: "project-detail",
-      component: () => import("./components/project/Project"),
-    },
-    {
-      path: "/editProject/:id",
-      name: "project-edit",
-      component: () => import("./components/project/EditProject"),
-    },
-    {
-      path: "/addProject",
-      name: "add-project",
-      component: () => import("./components/project/AddProject"),
-    },
-    {
-      path: "/addUserStory/:idProject",
-      name: "user-story-detail",
-      component: () => import("./components/user-story/AddUserStory"),
-    },
-    {
       path: "/clients",
       name: "clients",
       component: () => import("./components/client/ListClients"),
