@@ -55,5 +55,15 @@ export default new Router({
       name: "add-proforma",
       component: () => import("./components/proforma/AddProforma"),
     },
+    {
+      path: "/contacto",
+      name: "contacto",
+      component: () => import("./components/contact/ListContact"),
+    },
+    {
+      path: "/addContact",
+      name: "add-contacto",
+      component: () => import("./components/contact/AddContact"),
+    },
   ],
 });
