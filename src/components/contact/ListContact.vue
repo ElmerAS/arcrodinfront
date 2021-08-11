@@ -49,11 +49,11 @@
           <label><strong>Sucursal:</strong></label> {{ currentContact.sucursal }}
         </div>
 
-        <a class="badge badge-warning"
+        <!--<a class="badge badge-warning"
           :href="'/contact/' + currentContact._id"
         >
           Editar
-        </a>
+        </a>-->
       </div>
       <div v-else>
         <br />

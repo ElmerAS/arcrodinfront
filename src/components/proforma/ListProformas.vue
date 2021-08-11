@@ -64,11 +64,11 @@
           <label><strong>Observacion:</strong></label> {{ currentProforma.observacion }}
         </div>
 
-        <a class="badge badge-warning"
+        <!--<a class="badge badge-warning"
           :href="'/editProforma/' + currentProforma._id"
         >
           Editar
-        </a>
+        </a>-->
       </div>
       <div v-else>
         <br />
