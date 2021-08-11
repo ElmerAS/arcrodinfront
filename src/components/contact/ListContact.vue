@@ -1,7 +1,7 @@
 <template>
   <div class="list row">
     <div class="col-md-8">
-      <div class="input-group mb-3">
+      <!--<div class="input-group mb-3">
         <input type="text" class="form-control" placeholder="Busqueda por nombre"
           v-model="name" readonly/>
         <div class="input-group-append">
@@ -11,7 +11,7 @@
             Buscar
           </button>
         </div>
-      </div>
+      </div>-->
     </div>
     <div class="col-md-2">
       <router-link to="/addContact" class="nav-link btn btn-outline-info">Añadir</router-link>
